@@ -99,8 +99,18 @@ def jaccard_overlap(
     return len(a & b) / len(a | b) if a | b else None
 
 
+_INR_MARKERS = ("₹", "inr", "rs.", "rs ")
+
+
+def _is_indian_host(url: str) -> bool:
+    """A .in host that is not a Google domain (google.co.in is a request artifact, not signal)."""
+    host = urlparse(url).hostname or ""
+    return host.endswith(".in") and not host.startswith(("google.", "www.google."))
+
+
 def india_relevance(record: dict[str, Any]) -> float | None:
-    """Local: share of places whose address names the query city. Else: share of .in domains."""
+    """Local: places whose address names the query city. Shopping: items priced in rupees.
+    News: share of non-Google .in domains."""
     if not record["ok"]:
         return None
     if record["intent"] == "local":
@@ -111,12 +121,17 @@ def india_relevance(record: dict[str, Any]) -> float | None:
         return sum(
             any(a in str(i.get("address") or "").lower() for a in city.aliases) for i in items
         ) / len(items)
+    if record["intent"] == "shopping":
+        items = record.get("shopping_results", [])
+        if not items:
+            return None
+        return sum(
+            any(m in str(i.get("price") or "").lower() for m in _INR_MARKERS) for i in items
+        ) / len(items)
     results = record.get("results", [])[:TOP_K]
     if not results:
         return None
-    return sum((urlparse(r.get("url", "")).hostname or "").endswith(".in") for r in results) / len(
-        results
-    )
+    return sum(_is_indian_host(r.get("url", "")) for r in results) / len(results)
 
 
 @dataclass(frozen=True)

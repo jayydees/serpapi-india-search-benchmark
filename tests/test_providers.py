@@ -41,7 +41,6 @@ def test_serpapi_news_requests_and_normalisation(q_news):
         "q": "RBI repo rate decision latest",
         "hl": "en",
         "gl": "in",
-        "so": 1,
         "no_cache": "false",
         "api_key": "<KEY>",
     }

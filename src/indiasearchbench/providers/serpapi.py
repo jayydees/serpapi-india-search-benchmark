@@ -45,8 +45,6 @@ def _params(engine: str, query: Query) -> dict[str, Any]:
     common: dict[str, Any] = {"engine": engine, "q": query.text, "hl": "en", "gl": "in"}
     if engine in ("google", "google_shopping"):
         common["google_domain"] = "google.co.in"
-    if engine == "google_news":
-        common["so"] = 1
     if engine == "google_maps":
         city = query.city_info
         assert city is not None

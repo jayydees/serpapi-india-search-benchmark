@@ -123,6 +123,22 @@ def test_india_relevance_web_counts_in_domains():
     assert metrics.india_relevance(rec(ok=False)) is None
 
 
+def test_india_relevance_ignores_google_domains():
+    record = rec(
+        results=[{"url": "https://www.google.co.in/search?q=x"}, {"url": "https://a.example.in"}]
+    )
+    assert metrics.india_relevance(record) == 0.5
+
+
+def test_india_relevance_shopping_counts_rupee_prices():
+    record = rec(
+        intent="shopping",
+        shopping_results=[{"price": "₹1,199"}, {"price": "$20.00"}, {"price": "Rs. 499"}],
+    )
+    assert metrics.india_relevance(record) == 2 / 3
+    assert metrics.india_relevance(rec(intent="shopping")) is None
+
+
 def test_cost_prefers_reported_then_table():
     pricing = {"serper": PriceRow(1.0, "credit", "UNVERIFIED", "u", "2026-10-21")}
     assert metrics.cost_per_1000([rec(credits_used=2), rec(credits_used=2)], pricing) == 2.0
