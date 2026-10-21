@@ -45,7 +45,7 @@ Everything is timed on the machine that runs the script, so network distance to 
 Several provider details were not confirmed against a live response when this was written. Each lives in one clearly marked place in code. Do a small `--live --limit 2` run and compare the raw files in `runs/<dir>/raw/` before trusting these.
 
 - **Serper**: endpoint names, body fields (including the `location` format), response keys (`organic`, `news`, `places`, `shopping`, `phoneNumber`) and credits per query come from third-party guides. See `SERPER_MAP` in `providers/serper.py`.
-- **SerpApi**: the `search_metadata.cache_hit` key is read defensively. The maps response is documented without a website field.
+- **SerpApi**: the docs name no cache flag. A response is treated as cached when its `search_metadata.processed_at` is more than 30 seconds old, because a repeated query returns the first search's id and timestamps. The first 10-query run showed this: cached responses came back in 60-100 ms and were first counted as live, which made SerpApi's local latency look unrealistically low. The maps response is documented without a website field.
 - **Apify**: the Authorization Bearer header is used for auth (a token query parameter is the other documented style), and the places actor's output keys come from its listing page.
 - **SearchApi**: the India `location` format is an inference, so the adapter does not send `location`.
 - **Exa**: how `costDollars` counts highlights.

@@ -1,14 +1,15 @@
 """SerpApi adapter plus the free Account API budget guard.
 
 Parameter names come from docs/facts fetched 2026-10-21 (see METHODOLOGY.md).
-UNVERIFIED: the `search_metadata.cache_hit` key is read defensively because the
-fetched docs do not name a cache flag. Run `verify-live` (see METHODOLOGY.md) to confirm.
+Cache detection: the docs name no cache flag, so a response whose `processed_at` is older than
+`CACHE_AGE_SECONDS` counts as cached (see `_is_cached`).
 """
 
 from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from typing import Any
 
 import requests
@@ -98,6 +99,26 @@ _PARSERS: dict[str, Callable[[dict[str, Any], Parsed], None]] = {
 }
 
 
+CACHE_AGE_SECONDS = 30
+
+
+def _is_cached(metadata: dict[str, Any], now: datetime | None = None) -> bool:
+    """A cached response carries the original `processed_at`, so it is older than a live one.
+
+    The docs name no cache flag. Observed live on 2026-10-21: a repeated query returned the same
+    search id and the first search's timestamps in about 60-100 ms. `cache_hit` is kept in case a
+    flag is added later. Without a parsable timestamp the response counts as live.
+    """
+    if metadata.get("cache_hit"):
+        return True
+    stamp = str(metadata.get("processed_at") or "").removesuffix(" UTC")
+    try:
+        processed = datetime.strptime(stamp, "%Y-%m-%d %H:%M:%S").replace(tzinfo=UTC)
+    except ValueError:
+        return False
+    return ((now or datetime.now(UTC)) - processed).total_seconds() > CACHE_AGE_SECONDS
+
+
 class SerpApiProvider(Provider):
     name = "serpapi"
     env_var = "SERPAPI_API_KEY"
@@ -123,7 +144,7 @@ class SerpApiProvider(Provider):
             if payload.get("error"):
                 raise ProviderError(self._clean(str(payload["error"])))
             _PARSERS[engine](payload, out)
-            cached = bool((payload.get("search_metadata") or {}).get("cache_hit"))
+            cached = _is_cached(payload.get("search_metadata") or {})
             out.cache_hit = out.cache_hit or cached
             out.credits_used += 0 if cached else 1
         return out

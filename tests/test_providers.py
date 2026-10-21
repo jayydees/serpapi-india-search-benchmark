@@ -259,3 +259,16 @@ def test_searchapi_local_and_shopping(q_local, q_shop):
     shop = SearchApiProvider(KEY, session).search(q_shop)
     assert redacted(session.calls[0])["params"]["engine"] == "google_shopping"
     assert shop.shopping_results[0]["merchant"] == "Example Store"
+
+
+def test_serpapi_cache_detection_uses_processed_at_age():
+    from datetime import UTC, datetime
+
+    from indiasearchbench.providers.serpapi import _is_cached
+
+    now = datetime(2026, 10, 21, 18, 30, 0, tzinfo=UTC)
+    assert _is_cached({"processed_at": "2026-10-21 18:18:05 UTC"}, now)
+    assert not _is_cached({"processed_at": "2026-10-21 18:29:50 UTC"}, now)
+    assert _is_cached({"cache_hit": True}, now)
+    assert not _is_cached({}, now)
+    assert not _is_cached({"processed_at": "not a date"}, now)
