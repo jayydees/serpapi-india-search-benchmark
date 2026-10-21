@@ -63,8 +63,18 @@ def test_request_building_has_temperature_zero_and_header_key():
 def test_score_parses_synthetic_gemini_reply():
     session = FakeSession(FakeResponse(fixture("gemini_response")))
     out = judge.Judge(KEY, "model-x", session).score(QUERY, result())
-    assert out == {"score": 2, "reason": "Most results match the rubric."}
+    assert out["score"] == 2
+    assert out["reason"] == "Most results match the rubric."
+    assert "model_version" in out
     assert len(session.calls) == 1
+
+
+def test_judgement_records_resolved_model_version():
+    payload = {
+        "candidates": [{"content": {"parts": [{"text": '{"score": 3, "reason": "Good."}'}]}}],
+        "modelVersion": "synthetic-model-1.2",
+    }
+    assert judge.parse_judgement(payload)["model_version"] == "synthetic-model-1.2"
 
 
 @pytest.mark.parametrize(

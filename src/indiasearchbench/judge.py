@@ -89,7 +89,7 @@ def parse_judgement(payload: dict[str, Any]) -> dict[str, Any]:
         raise JudgeError("judge reply was not the expected JSON") from None
     if not 0 <= score <= 3:
         raise JudgeError(f"judge score {score} is outside 0-3")
-    return {"score": score, "reason": reason}
+    return {"score": score, "reason": reason, "model_version": payload.get("modelVersion")}
 
 
 class Judge:

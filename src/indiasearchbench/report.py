@@ -104,6 +104,14 @@ def _wins_losses(summary: dict[str, dict[str, dict[str, Any]]]) -> str:
     return "\n".join(out)
 
 
+def _judge_versions(records: list[dict[str, Any]]) -> str:
+    """Exact model versions the judge API reported, since an alias can move between runs."""
+    versions = sorted(
+        {r["judge"]["model_version"] for r in records if r.get("judge", {}).get("model_version")}
+    )
+    return f" (resolved to: {', '.join(versions)})" if versions else ""
+
+
 def _methods(meta: dict[str, Any], state: dict[str, Any]) -> str:
     account = meta.get("serpapi_account")
     lines = [
@@ -112,7 +120,7 @@ def _methods(meta: dict[str, Any], state: dict[str, Any]) -> str:
         f"Python {meta.get('python', 'unknown')}, requests {meta.get('requests', 'unknown')}",
         f"- Providers: {', '.join(meta.get('providers', []))}; intents: "
         f"{', '.join(meta.get('intents', []))}; queries per intent limit: {meta.get('limit')}",
-        f"- Judge: {meta.get('judge_model') or 'off'}",
+        f"- Judge: {meta.get('judge_model') or 'off'}{_judge_versions(state['records'])}",
         f"- Records: {len(state['records'])}",
         "- Latency is measured client-side from the runner's network location, successful "
         "non-cached responses only, p50 and p95 by nearest rank. Apify latency includes actor "
