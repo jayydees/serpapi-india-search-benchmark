@@ -272,3 +272,14 @@ def test_serpapi_cache_detection_uses_processed_at_age():
     assert _is_cached({"cache_hit": True}, now)
     assert not _is_cached({}, now)
     assert not _is_cached({"processed_at": "not a date"}, now)
+
+
+def test_serpapi_no_cache_flag_changes_request_param():
+    from indiasearchbench.providers.serpapi import SerpApiProvider
+    from indiasearchbench.queries import Query
+
+    provider = SerpApiProvider(KEY, None, None)
+    query = Query("shop-01", "shopping", "whey protein 1kg", "r", None)
+    assert provider.build_requests(query)[0].params["no_cache"] == "false"
+    provider.no_cache = True
+    assert provider.build_requests(query)[0].params["no_cache"] == "true"

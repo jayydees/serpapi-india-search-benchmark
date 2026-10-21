@@ -124,16 +124,18 @@ class SerpApiProvider(Provider):
     env_var = "SERPAPI_API_KEY"
     intents = frozenset({"news", "local", "shopping"})
     structured = frozenset({"news", "local", "shopping"})
+    no_cache = False  # set by the CLI: every search is then billed and timed live
 
     def calls_for(self, intent: str) -> int:
         return len(_CALLS[intent])
 
     def build_requests(self, query: Query) -> list[RequestSpec]:
+        no_cache = "true" if self.no_cache else "false"
         return [
             RequestSpec(
                 "GET",
                 SEARCH_URL,
-                params={**_params(engine, query), "no_cache": "false", "api_key": self.api_key},
+                params={**_params(engine, query), "no_cache": no_cache, "api_key": self.api_key},
             )
             for engine in _CALLS[query.intent]
         ]

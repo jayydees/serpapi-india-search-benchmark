@@ -36,6 +36,11 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--live", action="store_true", help="call the APIs (spends credits)")
     run.add_argument("--judge", action="store_true", help="score results with the Gemini judge")
     run.add_argument("--max-serpapi-searches", type=int, default=DEFAULT_MAX_SEARCHES)
+    run.add_argument(
+        "--serpapi-no-cache",
+        action="store_true",
+        help="bypass SerpApi's 1-hour cache so every search is billed and timed live",
+    )
     run.add_argument("--queries", type=Path, default=DEFAULT_QUERIES_PATH)
     run.add_argument("--pricing", type=Path, default=DEFAULT_PRICING_PATH)
     run.add_argument("--out", type=Path, default=Path("runs"))
@@ -109,6 +114,8 @@ def _run(args: argparse.Namespace, env: Mapping[str, str], session: Any) -> int:
     providers = {
         n: PROVIDERS[n](env[PROVIDERS[n].env_var], session, run_dir / "raw") for n in active
     }
+    if "serpapi" in providers:
+        providers["serpapi"].no_cache = args.serpapi_no_cache
     meta = new_meta(active, intents, args.limit, model)
     state = execute_run(run_dir, providers, queries, meta, judge, print)
     if account_before is not None:
