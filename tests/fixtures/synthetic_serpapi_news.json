@@ -1,0 +1,8 @@
+{
+  "search_metadata": {"status": "Success"},
+  "news_results": [
+    {"position": 1, "title": "Synthetic headline one", "link": "https://news.example.in/1", "source": {"name": "Example Times"}, "date": "2 hours ago", "iso_date": "2026-10-21T08:00:00Z"},
+    {"position": 2, "title": "Synthetic headline two", "link": "https://news.example.in/2", "source": {"name": "Example Daily"}, "date": "1 day ago"},
+    {"position": 3, "title": "Synthetic headline three", "link": "https://news.example.in/3", "source": {"name": ""}, "date": "3 days ago"}
+  ]
+}

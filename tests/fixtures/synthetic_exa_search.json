@@ -1,0 +1,8 @@
+{
+  "requestId": "synthetic-request",
+  "results": [
+    {"title": "Synthetic headline one", "url": "https://news.example.in/1", "publishedDate": "2026-10-20T10:00:00.000Z", "highlights": ["A synthetic highlight."]},
+    {"title": "Synthetic headline five", "url": "https://blog.example.com/5", "publishedDate": null, "text": "Synthetic body text for the fifth result."}
+  ],
+  "costDollars": {"total": 0.008}
+}

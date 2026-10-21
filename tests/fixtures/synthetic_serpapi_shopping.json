@@ -1,0 +1,8 @@
+{
+  "search_metadata": {"status": "Success"},
+  "shopping_results": [
+    {"position": 1, "title": "Sample Whey Protein 1kg", "price": "Rs. 2,499", "extracted_price": 2499, "source": "Example Store", "rating": 4.4, "product_link": "https://shop.example.in/p/1"},
+    {"position": 2, "title": "Placeholder Whey 1kg", "price": "Rs. 2,199", "source": "Demo Mart", "product_link": "https://shop.example.in/p/2"},
+    {"position": 3, "title": "Unpriced Whey", "source": "Demo Mart", "product_link": "https://shop.example.in/p/3"}
+  ]
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "searchQuery": {"term": "sample"},
+    "organicResults": [
+      {"position": 1, "title": "Sample result one", "url": "https://www.example.in/a", "description": "First sample snippet."},
+      {"position": 2, "title": "Sample result six", "url": "https://six.example.net/6", "description": "Sixth sample snippet."}
+    ]
+  }
+]

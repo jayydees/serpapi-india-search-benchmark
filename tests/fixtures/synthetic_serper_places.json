@@ -1,0 +1,8 @@
+{
+  "searchParameters": {"q": "sample"},
+  "places": [
+    {"title": "Sample Pharmacy", "address": "1 Sample Road, Koramangala, Bengaluru", "rating": 4.2, "phoneNumber": "+91 80 0000 0002", "website": "https://pharmacy.example.in"},
+    {"title": "Demo Chemist", "address": "2 Demo Street, Bengaluru", "rating": 3.9}
+  ],
+  "credits": 1
+}

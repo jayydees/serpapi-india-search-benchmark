@@ -1,0 +1,8 @@
+{
+  "search_metadata": {"status": "Success"},
+  "local_results": [
+    {"position": 1, "title": "Sample Cafe", "address": "12 Sample Road, Indiranagar, Bengaluru, Karnataka", "phone": "+91 80 0000 0001", "rating": 4.5, "type": "Cafe"},
+    {"position": 2, "title": "Placeholder Bistro", "address": "5 Placeholder Street, Bangalore", "rating": 4.1, "type": "Restaurant"},
+    {"position": 3, "title": "Far Away Cafe", "address": "9 Example Lane, Pune", "phone": "+91 20 0000 0003", "type": "Cafe"}
+  ]
+}

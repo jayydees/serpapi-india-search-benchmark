@@ -1,0 +1,8 @@
+{
+  "searchParameters": {"q": "sample"},
+  "news": [
+    {"title": "Synthetic headline one", "link": "https://news.example.in/1", "snippet": "Snippet.", "date": "2 hours ago", "source": "Example Times"},
+    {"title": "Synthetic headline two", "link": "https://news.example.in/2", "snippet": "Snippet.", "source": "Example Daily"}
+  ],
+  "credits": 1
+}

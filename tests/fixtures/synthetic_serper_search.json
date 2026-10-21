@@ -1,0 +1,8 @@
+{
+  "searchParameters": {"q": "sample", "gl": "in"},
+  "organic": [
+    {"position": 1, "title": "Sample result one", "link": "https://www.example.in/a", "snippet": "First sample snippet."},
+    {"position": 2, "title": "Sample result four", "link": "https://other.example.org/d", "snippet": "Fourth sample snippet."}
+  ],
+  "credits": 1
+}

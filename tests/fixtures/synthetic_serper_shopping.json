@@ -1,0 +1,8 @@
+{
+  "searchParameters": {"q": "sample"},
+  "shopping": [
+    {"title": "Sample Earbuds", "source": "Example Store", "link": "https://shop.example.in/e/1", "price": "Rs. 1,299", "rating": 4.0},
+    {"title": "Demo Earbuds", "source": "Demo Mart", "link": "https://shop.example.in/e/2", "price": "Rs. 999"}
+  ],
+  "credits": 1
+}

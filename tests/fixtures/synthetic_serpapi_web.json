@@ -1,0 +1,8 @@
+{
+  "search_metadata": {"status": "Success", "cache_hit": false},
+  "organic_results": [
+    {"position": 1, "title": "Sample result one", "link": "https://www.example.in/a", "snippet": "First sample snippet."},
+    {"position": 2, "title": "Sample result two", "link": "https://news.example.co.in/b", "snippet": "Second sample snippet."},
+    {"position": 3, "title": "Sample result three", "link": "https://www.example.com/c", "snippet": "Third sample snippet."}
+  ]
+}

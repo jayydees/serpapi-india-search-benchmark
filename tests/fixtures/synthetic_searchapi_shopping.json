@@ -1,0 +1,5 @@
+{
+  "shopping_results": [
+    {"position": 1, "title": "Sample Mixer Grinder", "price": "Rs. 3,499", "seller": "Example Store", "rating": 4.3, "product_link": "https://shop.example.in/m/1"}
+  ]
+}

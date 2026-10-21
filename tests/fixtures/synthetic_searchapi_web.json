@@ -1,0 +1,7 @@
+{
+  "search_metadata": {"status": "Success"},
+  "organic_results": [
+    {"position": 1, "title": "Sample result one", "link": "https://www.example.in/a", "snippet": "First sample snippet.", "date": "Oct 20, 2026", "source": "Example Times"},
+    {"position": 2, "title": "Sample result seven", "link": "https://seven.example.org/7", "snippet": "Seventh sample snippet."}
+  ]
+}

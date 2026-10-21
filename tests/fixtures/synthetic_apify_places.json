@@ -1,0 +1,4 @@
+[
+  {"title": "Sample Cafe", "address": "12 Sample Road, Indiranagar, Bengaluru", "phone": "+91 80 0000 0001", "totalScore": 4.5, "website": "https://cafe.example.in"},
+  {"title": "Demo Cafe", "address": "3 Demo Street, Bengaluru", "totalScore": 4.0}
+]
