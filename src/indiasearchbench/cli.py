@@ -125,6 +125,22 @@ def _run(args: argparse.Namespace, env: Mapping[str, str], session: Any) -> int:
     return 0
 
 
+def load_dotenv(path: Path) -> dict[str, str]:
+    """Read KEY=value lines from a local .env file; a missing file gives an empty dict."""
+    if not path.is_file():
+        return {}
+    values: dict[str, str] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        value = value.strip().strip("\"'")
+        if value:
+            values[key.strip()] = value
+    return values
+
+
 def main(
     argv: Sequence[str] | None = None,
     env: Mapping[str, str] | None = None,
@@ -134,7 +150,9 @@ def main(
     if args.command == "report":
         print(f"Report: {write_report(args.run_dir, args.pricing)}")
         return 0
-    return _run(args, os.environ if env is None else env, session)
+    if env is None:
+        env = {**load_dotenv(Path(".env")), **os.environ}
+    return _run(args, env, session)
 
 
 if __name__ == "__main__":

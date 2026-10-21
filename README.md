@@ -43,7 +43,7 @@ A dry run prints the plan: queries selected, calls and estimated credits per pro
 
 ## Environment variables
 
-Keys are read from the environment only. They are never logged and are redacted from error text and saved files. A provider whose variable is missing is skipped with a message.
+Keys are read from the environment, or from a local `.env` file in the folder you run the command from (copy `.env.example` to `.env`; it is gitignored). Real environment variables win over `.env`. Keys are never logged and are redacted from error text and saved files. A provider whose variable is missing is skipped with a message.
 
 | Variable | Used for |
 |---|---|
