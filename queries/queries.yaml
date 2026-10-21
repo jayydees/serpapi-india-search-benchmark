@@ -1,0 +1,220 @@
+# 50 benchmark queries: 17 news/general, 17 local, 16 shopping.
+# All queries are generic and publicly harmless. `rubric` is what the optional judge scores against.
+queries:
+  - id: news-01
+    intent: news
+    text: "IPL auction date and venue"
+    rubric: "The answer names the auction date and venue for the upcoming IPL auction from a recent source."
+  - id: news-02
+    intent: news
+    text: "Indian cricket team upcoming fixtures"
+    rubric: "The answer lists the next scheduled India matches with dates and opponents."
+  - id: news-03
+    intent: news
+    text: "RBI repo rate decision latest"
+    rubric: "The answer states the most recent RBI repo rate decision, the rate and the announcement date."
+  - id: news-04
+    intent: news
+    text: "Sensex and Nifty today closing"
+    rubric: "The answer gives the latest Sensex and Nifty closing levels with the trading date."
+  - id: news-05
+    intent: news
+    text: "RBI monetary policy meeting explained"
+    rubric: "The answer explains what the monetary policy committee decides and what its latest outcome means for borrowers."
+  - id: news-06
+    intent: news
+    text: "UPI transaction limit changes"
+    rubric: "The answer describes current UPI transaction limits and any recent change, citing NPCI or a news source."
+  - id: news-07
+    intent: news
+    text: "iPhone price in India new launch"
+    rubric: "The answer gives launch prices in INR for the newest iPhone models sold in India."
+  - id: news-08
+    intent: news
+    text: "Samsung Galaxy launch India price"
+    rubric: "The answer names a recent Samsung Galaxy launch in India with its INR price and date."
+  - id: news-09
+    intent: news
+    text: "OnePlus new phone launch date India"
+    rubric: "The answer gives a launch date or release status for the next OnePlus phone in India."
+  - id: news-10
+    intent: news
+    text: "southwest monsoon withdrawal IMD update"
+    rubric: "The answer reports the latest IMD update on southwest monsoon withdrawal with dates and regions."
+  - id: news-11
+    intent: news
+    text: "Mumbai rain travel advisory today"
+    rubric: "The answer gives a current rain or travel advisory for Mumbai from an official or news source."
+  - id: news-12
+    intent: news
+    text: "Vande Bharat new route announced"
+    rubric: "The answer names a recently announced Vande Bharat route with its stations and start date."
+  - id: news-13
+    intent: news
+    text: "Delhi airport flight delays weather advisory"
+    rubric: "The answer reports current flight delay or weather advisories for Delhi airport."
+  - id: news-14
+    intent: news
+    text: "ISRO next launch date"
+    rubric: "The answer gives the next scheduled ISRO launch with mission name and date."
+  - id: news-15
+    intent: news
+    text: "Pro Kabaddi League schedule"
+    rubric: "The answer lists upcoming Pro Kabaddi League fixtures with dates and teams."
+  - id: news-16
+    intent: news
+    text: "train ticket availability Diwali travel"
+    rubric: "The answer explains ticket availability or booking windows for Diwali travel on Indian Railways."
+  - id: news-17
+    intent: news
+    text: "petrol diesel price today Bangalore"
+    rubric: "The answer states today's petrol and diesel prices in Bangalore in INR per litre."
+  - id: local-01
+    intent: local
+    text: "vegan cafe in Indiranagar"
+    city: Bangalore
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-02
+    intent: local
+    text: "24 hour pharmacy near Koramangala"
+    city: Bangalore
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-03
+    intent: local
+    text: "co-working space in HSR Layout"
+    city: Bangalore
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-04
+    intent: local
+    text: "rooftop restaurant in Bandra"
+    city: Mumbai
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-05
+    intent: local
+    text: "bike repair shop in Andheri"
+    city: Mumbai
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-06
+    intent: local
+    text: "pet-friendly cafe in Powai"
+    city: Mumbai
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-07
+    intent: local
+    text: "bookstore in Connaught Place"
+    city: Delhi NCR
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-08
+    intent: local
+    text: "dentist in Saket"
+    city: Delhi NCR
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-09
+    intent: local
+    text: "gym in Lajpat Nagar"
+    city: Delhi NCR
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-10
+    intent: local
+    text: "filter coffee shop in T Nagar"
+    city: Chennai
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-11
+    intent: local
+    text: "car service center in Adyar"
+    city: Chennai
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-12
+    intent: local
+    text: "yoga studio in Anna Nagar"
+    city: Chennai
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-13
+    intent: local
+    text: "biryani restaurant in Banjara Hills"
+    city: Hyderabad
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-14
+    intent: local
+    text: "laundry service in Gachibowli"
+    city: Hyderabad
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-15
+    intent: local
+    text: "bakery in Jubilee Hills"
+    city: Hyderabad
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-16
+    intent: local
+    text: "ice cream parlour in Koregaon Park"
+    city: Pune
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: local-17
+    intent: local
+    text: "mobile repair shop in Kothrud"
+    city: Pune
+    rubric: "Results are real places matching the request in the named area, with name, address and rating present."
+  - id: shop-01
+    intent: shopping
+    text: "whey protein 1kg"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-02
+    intent: shopping
+    text: "boAt earbuds"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-03
+    intent: shopping
+    text: "mixer grinder 750 watt"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-04
+    intent: shopping
+    text: "running shoes men size 9"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-05
+    intent: shopping
+    text: "cotton bedsheet double bed"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-06
+    intent: shopping
+    text: "air fryer 4 litre"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-07
+    intent: shopping
+    text: "BLDC ceiling fan"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-08
+    intent: shopping
+    text: "steel water bottle 1 litre"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-09
+    intent: shopping
+    text: "laptop backpack 15.6 inch"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-10
+    intent: shopping
+    text: "smartwatch under 5000"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-11
+    intent: shopping
+    text: "yoga mat 6mm"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-12
+    intent: shopping
+    text: "induction cooktop"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-13
+    intent: shopping
+    text: "wireless mouse"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-14
+    intent: shopping
+    text: "electric kettle 1.5 litre"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-15
+    intent: shopping
+    text: "basmati rice 5kg"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
+  - id: shop-16
+    intent: shopping
+    text: "LED bulb 9 watt pack of 4"
+    rubric: "Results are purchasable products matching the query, each with a price in INR and the merchant that sells it."
