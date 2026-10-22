@@ -8,8 +8,6 @@ A reproducible benchmark of search APIs for India-focused queries. It compares S
 
 The repo is the method and the harness. Results from two runs are below. Run it with your own keys and read the numbers it produces.
 
-## Why India and these three intents
-
 ## Why India and these three intents?
 
 AI agents need more than a list of links. An agent serving Indian users may need a fresh news article, a local business with the right address and rating, or a product price in rupees from a relevant merchant. Search APIs that look similar on generic web queries may behave differently on these structured, location-sensitive tasks.
