@@ -32,8 +32,22 @@ def web_item(title: str, url: str, snippet: str, position: int) -> dict[str, Any
     return {"title": title, "url": url, "snippet": snippet, "position": position}
 
 
-def local_item(name: Any, address: Any, phone: Any, rating: Any) -> dict[str, Any]:
-    return {"name": name, "address": address, "phone": phone, "rating": rating}
+def local_item(
+    name: Any,
+    address: Any,
+    phone: Any,
+    rating: Any,
+    lat: Any = None,
+    lon: Any = None,
+) -> dict[str, Any]:
+    return {
+        "name": name,
+        "address": address,
+        "phone": phone,
+        "rating": rating,
+        "lat": lat,
+        "lon": lon,
+    }
 
 
 def shopping_item(title: Any, price: Any, merchant: Any, rating: Any) -> dict[str, Any]:

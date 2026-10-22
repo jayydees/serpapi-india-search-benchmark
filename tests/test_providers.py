@@ -135,7 +135,15 @@ def test_serper_local_sends_location_and_parses_places(q_local):
         "address": "1 Sample Road, Koramangala, Bengaluru",
         "phone": "+91 80 0000 0002",
         "rating": 4.2,
+        "lat": None,
+        "lon": None,
     }
+
+
+def test_serper_local_keeps_coordinates_when_present(q_local):
+    payload = {"places": [{"title": "Cafe", "latitude": 12.97, "longitude": 77.65}], "credits": 1}
+    result = SerperProvider(KEY, FakeSession(FakeResponse(payload))).search(q_local)
+    assert (result.local_results[0]["lat"], result.local_results[0]["lon"]) == (12.97, 77.65)
 
 
 def test_serper_shopping(q_shop):

@@ -70,7 +70,7 @@ def completeness(record: dict[str, Any]) -> float | None:
     if not record["ok"] or not record.get("structured_offered"):
         return None
     key, fields = _COMPLETENESS_FIELDS[record["intent"]]
-    items = record.get(key, [])
+    items = record.get(key, [])[:TOP_K]
     if not items:
         return 0.0
     return sum(all(_present(i.get(f)) for f in fields) for i in items) / len(items)
@@ -108,21 +108,43 @@ def _is_indian_host(url: str) -> bool:
     return host.endswith(".in") and not host.startswith(("google.", "www.google."))
 
 
+LOCAL_RADIUS_KM = 30.0
+
+
+def _distance_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Great-circle distance (haversine)."""
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    a = (
+        math.sin((p2 - p1) / 2) ** 2
+        + math.cos(p1) * math.cos(p2) * math.sin(math.radians(lon2 - lon1) / 2) ** 2
+    )
+    return 12742 * math.asin(math.sqrt(a))
+
+
+def _in_city(item: dict[str, Any], city: Any) -> bool:
+    """Within LOCAL_RADIUS_KM of the city centre by coordinates, else by address alias.
+
+    Coordinates come first because some providers leave the city out of the address.
+    """
+    lat, lon = item.get("lat"), item.get("lon")
+    if lat is not None and lon is not None:
+        return _distance_km(float(lat), float(lon), city.lat, city.lon) <= LOCAL_RADIUS_KM
+    return any(a in str(item.get("address") or "").lower() for a in city.aliases)
+
+
 def india_relevance(record: dict[str, Any]) -> float | None:
-    """Local: places whose address names the query city. Shopping: items priced in rupees.
+    """Local: top-10 places inside the query city. Shopping: items priced in rupees.
     News: share of non-Google .in domains."""
     if not record["ok"]:
         return None
     if record["intent"] == "local":
         city = CITIES.get(record.get("city") or "")
-        items = record.get("local_results", [])
+        items = record.get("local_results", [])[:TOP_K]
         if city is None or not items:
             return None
-        return sum(
-            any(a in str(i.get("address") or "").lower() for a in city.aliases) for i in items
-        ) / len(items)
+        return sum(_in_city(i, city) for i in items) / len(items)
     if record["intent"] == "shopping":
-        items = record.get("shopping_results", [])
+        items = record.get("shopping_results", [])[:TOP_K]
         if not items:
             return None
         return sum(

@@ -77,7 +77,14 @@ def _parse_maps(payload: dict[str, Any], out: Parsed) -> None:
             )
         )
         out.local_results.append(
-            local_item(r.get("title"), r.get("address"), r.get("phone"), r.get("rating"))
+            local_item(
+                r.get("title"),
+                r.get("address"),
+                r.get("phone"),
+                r.get("rating"),
+                (r.get("gps_coordinates") or {}).get("latitude"),
+                (r.get("gps_coordinates") or {}).get("longitude"),
+            )
         )
 
 

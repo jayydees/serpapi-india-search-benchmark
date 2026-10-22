@@ -72,7 +72,12 @@ class ApifyProvider(Provider):
                 out.results.append(web_item(r.get("title", ""), r.get("website") or "", "", i))
                 out.local_results.append(
                     local_item(
-                        r.get("title"), r.get("address"), r.get("phone"), r.get("totalScore")
+                        r.get("title"),
+                        r.get("address"),
+                        r.get("phone"),
+                        r.get("totalScore"),
+                        (r.get("location") or {}).get("lat"),
+                        (r.get("location") or {}).get("lng"),
                     )
                 )
             return out

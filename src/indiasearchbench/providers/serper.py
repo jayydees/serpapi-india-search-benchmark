@@ -100,6 +100,8 @@ def _parse_local(items: list[dict[str, Any]], out: Parsed) -> None:
                 r.get("address"),
                 r.get("phoneNumber") or r.get("phone"),
                 r.get("rating"),
+                r.get("latitude"),
+                r.get("longitude"),
             )
         )
 

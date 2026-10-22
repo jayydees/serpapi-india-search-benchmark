@@ -174,3 +174,16 @@ def test_load_pricing_reads_shipped_table():
 
 def test_load_pricing_missing_file(tmp_path):
     assert load_pricing(tmp_path / "none.md") == {}
+
+
+def test_india_relevance_local_uses_coordinates_when_address_omits_city():
+    near = {"address": "5th Cross Rd", "lat": 12.97, "lon": 77.65}
+    far = {"address": "Some Road", "lat": 28.61, "lon": 77.21}
+    record = rec(intent="local", city="Bangalore", local_results=[near, far])
+    assert metrics.india_relevance(record) == 0.5
+
+
+def test_completeness_scores_only_the_top_ten_items():
+    good = {"date": "d", "source": "s"}
+    items = [good] * 10 + [{"date": None, "source": None}] * 10
+    assert metrics.completeness(rec(intent="news", news_items=items)) == 1.0
