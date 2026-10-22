@@ -76,7 +76,6 @@ class Parsed:
     shopping_results: list[dict[str, Any]] = field(default_factory=list)
     news_items: list[dict[str, Any]] = field(default_factory=list)
     credits_used: float = 0.0
-    overhead_credits: float = 0.0
     overhead_credits: float = 0.0  # benchmark-only calls, excluded from the cost table
     cost_usd: float | None = None
     cache_hit: bool = False
@@ -97,6 +96,7 @@ class NormalizedResult:
     news_items: list[dict[str, Any]] = field(default_factory=list)
     structured_offered: bool = False
     credits_used: float = 0.0
+    overhead_credits: float = 0.0
     cost_usd: float | None = None
     cache_hit: bool = False
     retries: int = 0

@@ -301,3 +301,31 @@ def test_news_baseline_call_is_overhead_for_two_call_providers():
         assert provider.is_overhead_call("news", 0)
         assert not provider.is_overhead_call("news", 1)
         assert not provider.is_overhead_call("local", 0)
+
+
+def test_news_result_records_overhead_credits_in_its_dict():
+    from indiasearchbench.queries import Query
+
+    query = Query("news-01", "news", "RBI repo rate decision latest", "r", None)
+    session = FakeSession(ok("serpapi_web"), ok("serpapi_news"))
+    result = SerpApiProvider(KEY, session).search(query)
+    assert result.to_dict()["overhead_credits"] == 1
+    assert result.to_dict()["credits_used"] == 2
+
+
+def test_cost_uses_recorded_overhead_when_the_baseline_was_cached():
+    from indiasearchbench import metrics
+    from indiasearchbench.metrics import PriceRow
+
+    pricing = {"serpapi": PriceRow(25.0, "search", "VERIFIED", "u", "2026-10-22")}
+    row = {
+        "provider": "serpapi",
+        "intent": "news",
+        "ok": True,
+        "credits_used": 1,
+        "overhead_credits": 0,
+        "cost_usd": None,
+        "pricing_key": "serpapi",
+        "structured_offered": True,
+    }
+    assert metrics.cost_per_1000([row], pricing) == 25.0
