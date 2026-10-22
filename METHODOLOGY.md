@@ -58,3 +58,12 @@ Several providers here return results collected from Google Search. Whether and 
 ## Terms that shaped the design
 
 Tavily and Brave are excluded because their terms restrict disclosing performance information or benchmarking, according to the research behind this repo. Raw responses stay in a gitignored directory because provider terms limit redistribution. Confirm both against the current terms.
+
+## Audit notes (2026-10-22)
+
+Found while checking the first 10-query run against raw responses, and fixed:
+
+- **Local relevance**: Serper's place addresses omit the city, so an address check scored it 42% against 100% for the others. Relevance is now the share of the top 10 places within 30 km of the city centre by coordinates, with the address check as a fallback. All three providers then scored 100%.
+- **Top-10 scoring**: providers return different list lengths (SerpApi news 100 items, local 20; Serper shopping 40; others 10). Completeness and relevance now use each provider's first 10 items.
+- **SerpApi cache**: see above. Cached responses are excluded from latency and billing.
+- **Serper empty news**: on the first pass the Serper news endpoint returned a `news` key with no items for 4 of 10 queries, which counts as 0% completeness for those. Re-sending two of those queries a day later returned 10 items each, so this looks intermittent rather than a fixed gap. One sample cannot separate the two, so repeat runs are needed before drawing a conclusion.
