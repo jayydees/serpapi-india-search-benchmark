@@ -87,7 +87,7 @@ A metric that cannot be computed, for example completeness for a provider that h
 
 ## Results (provisional)
 
-**Provisional.** One run of all 50 queries on 2026-10-22 starting 09:05 UTC, from one location in India, scored by one judge model (`gemini-3.5-flash-lite`, via the `gemini-flash-lite-latest` alias). A repeat at a different time of day has not been analysed yet, and these numbers can move. Provider prices come from `docs/PRICING.md` (fetched 2026-10-21) and need a by-eye re-check. Raw responses are not published because provider terms restrict redistribution.
+**Provisional.** One run of all 50 queries on 2026-10-22 starting 09:05 UTC, from one location in India, scored by one judge model (`gemini-3.5-flash-lite`, via the `gemini-flash-lite-latest` alias). A repeat at a different time of day has not been analysed yet, and these numbers can move. Provider prices come from `docs/PRICING.md`, read from each provider's pricing page on 2026-10-21 and re-checked in a browser on 2026-10-22. Raw responses are not published because provider terms restrict redistribution.
 
 SerpApi ran with its cache bypassed so every search was timed live. Sample sizes are 17 news, 17 local and 16 shopping queries. Exa offers news only, and Apify's actors cover news and local, so they are absent from the rows they do not serve.
 
@@ -148,7 +148,7 @@ One finding is still open: Serper's news endpoint returned no items for about a 
 - Domain overlap with SerpApi is an agreement measure. It does not say who is right.
 - The LLM judge is noisy and biased. It is one signal and is off by default. Agreement with human labels on a small subset is a TODO for the author.
 - Some provider parameters are unverified; see the verify-live list in `METHODOLOGY.md`.
-- Pricing rows need a by-eye re-check before any cost number is published.
+- Prices change. `docs/PRICING.md` records the date each price was read.
 
 See `METHODOLOGY.md` for exact metric definitions.
 

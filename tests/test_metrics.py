@@ -177,7 +177,7 @@ def test_load_pricing_reads_shipped_table():
     pricing = load_pricing()
     assert pricing["serpapi"].usd_per_1000 == 25.0
     assert pricing["serpapi"].status == "VERIFIED"
-    assert pricing["serper"].status == "UNVERIFIED"
+    assert pricing["serper"].status == "VERIFIED"
     assert {"exa", "apify", "apify_places", "searchapi"} <= set(pricing)
 
 
