@@ -10,9 +10,15 @@ The repo is the method and the harness. Results from two runs are below. Run it 
 
 ## Why India and these three intents
 
-An agent that grounds its answers in search needs more than ten blue links. For an Indian user it needs fresh local news, a place with an address and a rating in the right city, and a price in rupees from a merchant that ships there. A provider can do well on a US-style web query and still return thin or mis-located data for these. The benchmark measures that gap with plain, inspectable metrics: success rate, latency, structured-field completeness, India relevance, cost, and an optional blind LLM judge.
+## Why India and these three intents?
 
-Tavily and Brave are left out of the published tables on purpose. Their terms restrict disclosing performance information or benchmarking, so the repo does not ship adapters for them.
+AI agents need more than a list of links. An agent serving Indian users may need a fresh news article, a local business with the right address and rating, or a product price in rupees from a relevant merchant. Search APIs that look similar on generic web queries may behave differently on these structured, location-sensitive tasks.
+
+This benchmark compares SerpApi, Serper, Exa and Apify across 50 India-focused queries spanning news, local places and shopping. It measures success rate, latency, structured-field completeness, India relevance and cost, with an optional blind LLM judge.
+
+The goal is not to crown a universal winner. It is to understand where each provider performs well, where its limitations appear, and what developers gain for the price they pay. The results can help developers choose a provider for their use case and help identify where SerpApi's reliability and structured data justify its premium.
+
+Tavily and Brave are excluded from the published comparison because the terms reviewed for this project restrict publishing benchmark or performance comparisons. Their adapters are therefore not included. Recheck each provider's current terms before expanding the benchmark.
 
 ## Quick start
 
