@@ -128,6 +128,19 @@ All three returned places inside the query city every time (100%).
 
 Not measured: reliability over weeks, the breadth of engines, legal protections, support and documentation. Differences smaller than about 10 points between providers at these sample sizes can be noise, and the judge's scores moved between runs.
 
+## How this benchmark was checked
+
+The first live runs found six mistakes in my own code and metrics. I fixed each one before trusting any number. Each fix has a test, and METHODOLOGY.md has the details.
+
+1. **A bad SerpApi request.** The news call sent a parameter (`so`) that SerpApi rejects when `q` is present. Every news query failed until I removed it.
+2. **A misleading shopping score.** India relevance counted `.in` links. SerpApi's links point to `google.co.in` because of the request setting, so it scored 100% by accident. Shopping now counts items priced in rupees.
+3. **Cached results counted as live.** A repeated SerpApi query returned the first search's data in 60 to 100 ms. The harness now detects cached responses by the age of `processed_at`, and a `--serpapi-no-cache` option times every search live.
+4. **An unfair local score.** Serper's place addresses leave out the city, so an address check gave it 42% and the others 100%. Local relevance now uses distance from the city centre.
+5. **Lists of different lengths.** Providers return 10, 20, 40 or 100 items. Completeness and relevance now use each provider's first 10.
+6. **A hidden second call.** For news, SerpApi and Serper also get a web search that only feeds the overlap metric. That call is now left out of latency and cost.
+
+One finding is still open: Serper's news endpoint returned no items for about a third of the queries in two runs, on mostly different queries. A repeat run at a different time of day will show whether this is a pattern.
+
 ## Limitations
 
 - Latency is measured from wherever you run the script, including your network.
