@@ -53,6 +53,10 @@ class SerperProvider(Provider):
     intents = frozenset({"news", "local", "shopping"})
     structured = frozenset({"news", "local", "shopping"})
 
+    def is_overhead_call(self, intent: str, index: int) -> bool:
+        """The first call of a news query is the web baseline used for the overlap metric."""
+        return intent == "news" and index == 0
+
     def calls_for(self, intent: str) -> int:
         return len(_KINDS[intent])
 
@@ -73,7 +77,10 @@ class SerperProvider(Provider):
         for kind, payload in zip(_KINDS[query.intent], payloads, strict=True):
             items = payload.get(SERPER_MAP[kind][1], [])
             _PARSERS[kind](items, out)
-            out.credits_used += payload.get("credits", 1)
+            credits = payload.get("credits", 1)
+            out.credits_used += credits
+            if kind == "web":  # web baseline for the overlap metric, not part of the news cost
+                out.overhead_credits += credits
         return out
 
 

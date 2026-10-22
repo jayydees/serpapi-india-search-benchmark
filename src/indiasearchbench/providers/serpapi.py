@@ -133,6 +133,10 @@ class SerpApiProvider(Provider):
     structured = frozenset({"news", "local", "shopping"})
     no_cache = False  # set by the CLI: every search is then billed and timed live
 
+    def is_overhead_call(self, intent: str, index: int) -> bool:
+        """The first call of a news query is the web baseline used for the overlap metric."""
+        return intent == "news" and index == 0
+
     def calls_for(self, intent: str) -> int:
         return len(_CALLS[intent])
 
@@ -155,7 +159,10 @@ class SerpApiProvider(Provider):
             _PARSERS[engine](payload, out)
             cached = _is_cached(payload.get("search_metadata") or {})
             out.cache_hit = out.cache_hit or cached
-            out.credits_used += 0 if cached else 1
+            billed = 0 if cached else 1
+            out.credits_used += billed
+            if engine == "google":  # web baseline for the overlap metric, not part of the news cost
+                out.overhead_credits += billed
         return out
 
 

@@ -184,6 +184,23 @@ def load_pricing(path: Path = DEFAULT_PRICING_PATH) -> dict[str, PriceRow]:
     return rows
 
 
+_TWO_CALL_NEWS = ("serpapi", "serper")
+
+
+def _billable(record: dict[str, Any]) -> float:
+    """Credits for the calls that answer the query, without the benchmark's baseline web call.
+
+    Records saved before `overhead_credits` existed used one web call plus one news call for
+    SerpApi and Serper, so half of the credits are overhead for those.
+    """
+    credits = record["credits_used"]
+    if "overhead_credits" in record:
+        return credits - record["overhead_credits"]
+    if record["intent"] == "news" and record.get("provider") in _TWO_CALL_NEWS:
+        return credits / 2
+    return credits
+
+
 def cost_per_1000(records: Sequence[dict[str, Any]], pricing: dict[str, PriceRow]) -> float | None:
     """USD per 1,000 queries: the provider-reported cost, else table price x mean credits."""
     rows = [r for r in applicable(records) if r["ok"]]
@@ -195,7 +212,7 @@ def cost_per_1000(records: Sequence[dict[str, Any]], pricing: dict[str, PriceRow
     price = pricing.get(rows[0].get("pricing_key", ""))
     if price is None:
         return None
-    return mean(r["credits_used"] for r in rows) * price.usd_per_1000
+    return mean(_billable(r) for r in rows) * price.usd_per_1000
 
 
 def judge_mean(records: Iterable[dict[str, Any]]) -> float | None:

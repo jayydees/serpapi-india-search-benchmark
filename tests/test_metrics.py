@@ -141,10 +141,19 @@ def test_india_relevance_shopping_counts_rupee_prices():
 
 def test_cost_prefers_reported_then_table():
     pricing = {"serper": PriceRow(1.0, "credit", "UNVERIFIED", "u", "2026-10-21")}
-    assert metrics.cost_per_1000([rec(credits_used=2), rec(credits_used=2)], pricing) == 2.0
+    local = {"intent": "local", "credits_used": 2}
+    assert metrics.cost_per_1000([rec(**local), rec(**local)], pricing) == 2.0
     assert metrics.cost_per_1000([rec(cost_usd=0.008)], pricing) == pytest.approx(8.0)
     assert metrics.cost_per_1000([rec(provider="exa", pricing_key="exa")], pricing) is None
     assert metrics.cost_per_1000([rec(ok=False)], pricing) is None
+
+
+def test_cost_excludes_the_news_baseline_call():
+    pricing = {"serper": PriceRow(1.0, "credit", "UNVERIFIED", "u", "2026-10-21")}
+    new = rec(credits_used=2, overhead_credits=1)
+    old = rec(credits_used=2)  # saved before overhead_credits existed: two calls, half overhead
+    assert metrics.cost_per_1000([new], pricing) == 1.0
+    assert metrics.cost_per_1000([old], pricing) == 1.0
 
 
 def test_judge_mean_skips_errors():

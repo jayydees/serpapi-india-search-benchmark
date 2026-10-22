@@ -76,6 +76,8 @@ class Parsed:
     shopping_results: list[dict[str, Any]] = field(default_factory=list)
     news_items: list[dict[str, Any]] = field(default_factory=list)
     credits_used: float = 0.0
+    overhead_credits: float = 0.0
+    overhead_credits: float = 0.0  # benchmark-only calls, excluded from the cost table
     cost_usd: float | None = None
     cache_hit: bool = False
 
@@ -142,6 +144,10 @@ class Provider:
     def pricing_key(self, intent: str) -> str:
         return self.name
 
+    def is_overhead_call(self, intent: str, index: int) -> bool:
+        """True for a call made only for the benchmark (not timed, not costed)."""
+        return False
+
     def build_requests(self, query: Query) -> list[RequestSpec]:
         raise NotImplementedError
 
@@ -163,10 +169,11 @@ class Provider:
         payloads: list[Any] = []
         latency, retries, status = 0.0, 0, None
         try:
-            for spec in self.build_requests(query):
+            for index, spec in enumerate(self.build_requests(query)):
                 payload, elapsed, status, spent = self._send(spec)
                 payloads.append(payload)
-                latency += elapsed
+                if not self.is_overhead_call(query.intent, index):
+                    latency += elapsed
                 retries += spent
             parsed = self.parse(query, payloads)
         except ProviderError as exc:
@@ -184,6 +191,7 @@ class Provider:
         base.shopping_results = parsed.shopping_results
         base.news_items = parsed.news_items
         base.credits_used = parsed.credits_used
+        base.overhead_credits = parsed.overhead_credits
         base.cost_usd = parsed.cost_usd
         base.cache_hit = parsed.cache_hit
         base.raw_ref = self._save_raw(query, payloads)

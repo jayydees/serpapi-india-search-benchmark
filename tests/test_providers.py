@@ -291,3 +291,13 @@ def test_serpapi_no_cache_flag_changes_request_param():
     assert provider.build_requests(query)[0].params["no_cache"] == "false"
     provider.no_cache = True
     assert provider.build_requests(query)[0].params["no_cache"] == "true"
+
+
+def test_news_baseline_call_is_overhead_for_two_call_providers():
+    from indiasearchbench.providers.serpapi import SerpApiProvider as S
+    from indiasearchbench.providers.serper import SerperProvider as P
+
+    for provider in (S(KEY, None, None), P(KEY, None, None)):
+        assert provider.is_overhead_call("news", 0)
+        assert not provider.is_overhead_call("news", 1)
+        assert not provider.is_overhead_call("local", 0)
