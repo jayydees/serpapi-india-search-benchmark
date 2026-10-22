@@ -6,7 +6,7 @@ A reproducible benchmark of search APIs for India-focused queries. It compares S
 2. **Local places** in Indian cities: "vegan cafe in Indiranagar", "24 hour pharmacy near Koramangala".
 3. **Shopping**: Indian consumer products where the INR price and the merchant matter, such as "whey protein 1kg" or "mixer grinder 750 watt".
 
-The repo is the method and the harness. A first set of results is below, marked provisional. Run it with your own keys and read the numbers it produces.
+The repo is the method and the harness. Results from two runs are below. Run it with your own keys and read the numbers it produces.
 
 ## Why India and these three intents
 
@@ -85,48 +85,53 @@ The shape of the report, with placeholder numbers that are not measurements:
 
 A metric that cannot be computed, for example completeness for a provider that has no structured block, shows `n/a`. A provider that does not offer an intent is `n/a` for it, never zero.
 
-## Results (provisional)
+## Results (two runs)
 
-**Provisional.** One run of all 50 queries on 2026-10-22 starting 09:05 UTC, from one location in India, scored by one judge model (`gemini-3.5-flash-lite`, via the `gemini-flash-lite-latest` alias). A repeat at a different time of day has not been analysed yet, and these numbers can move. Provider prices come from `docs/PRICING.md`, read from each provider's pricing page on 2026-10-21 and re-checked in a browser on 2026-10-22. Raw responses are not published because provider terms restrict redistribution.
+Two live runs from one location in India, both with SerpApi's cache bypassed and a blind Gemini judge (`gemini-3.5-flash-lite`, via the `gemini-flash-lite-latest` alias).
 
-SerpApi ran with its cache bypassed so every search was timed live. Sample sizes are 17 news, 17 local and 16 shopping queries. Exa offers news only, and Apify's actors cover news and local, so they are absent from the rows they do not serve.
+- **Run 1:** 50 queries, started 2026-10-22 09:05 UTC (14:35 IST, early morning in Austin).
+- **Run 2:** the first 10 queries of each intent, started 2026-10-22 13:44 UTC (about 9 am in Austin).
 
-### Local places (17 queries)
+The tables compare both runs on the same 10 queries per intent. Sample sizes are small, so treat gaps smaller than about 0.5 judge points or 25% in speed as noise. Prices come from `docs/PRICING.md`, read from each provider's pricing page on 2026-10-21 and re-checked in a browser on 2026-10-22. Raw responses are not published because provider terms restrict redistribution.
 
-| Provider | Median | p95 | Fields complete | Judge (0-3) | USD per 1,000 |
+Exa offers news only. Apify's actors cover news and local. Median is in milliseconds. "Empty" counts queries where the provider answered with no items.
+
+### Local places
+
+| Provider | Median R1 / R2 | Fields complete R2 | Judge R1 / R2 | Empty R1 / R2 | USD per 1,000 |
 |---|---|---|---|---|---|
-| SerpApi | 1,460 ms | 3,668 ms | 99% | 2.65 | $25.00 |
-| Serper | 1,674 ms | 2,329 ms | 91% | 2.35 | $1.00 |
-| Apify | 11,736 ms | 41,769 ms | 99% | 2.00 | $15.00 |
+| SerpApi | 1,582 / 1,197 | 98% | 2.4 / 2.4 | 0 / 0 | $25.00 |
+| Serper | 1,661 / 1,661 | 87% | 2.2 / 2.3 | 0 / 0 | $1.00 |
+| Apify | 12,005 / 11,949 | 100% | 2.2 / 2.3 | 0 / 0 | $15.00 |
 
-All three returned places inside the query city every time (100%).
+All three returned places inside the query city every time.
 
-### News and general web (17 queries)
+### News and general web
 
-| Provider | Median | p95 | Fields complete | Judge (0-3) | USD per 1,000 |
+| Provider | Median R2 | Fields complete R2 | Judge R1 / R2 | Empty R1 / R2 | USD per 1,000 |
 |---|---|---|---|---|---|
-| Exa | 3,062 ms | 4,497 ms | 93% | 2.94 | $7.00 |
-| SerpApi | not comparable* | not comparable* | 100% | 2.62 | $25.00 |
-| Serper | not comparable* | not comparable* | 65% | 2.29 | $1.00 |
-| Apify | 31,787 ms | 101,417 ms | n/a | 2.24 | $1.80 |
+| Exa | 2,998 | 90% | 3.0 / 3.0 | 0 / 0 | $7.00 |
+| SerpApi | 1,391 | 100% | 2.67 / 1.80 | 0 / 0 | $25.00 |
+| Serper | 2,361 | 50% | 2.2 / 2.5 | 2 / 5 | $1.00 |
+| Apify | 22,348 | n/a | 2.2 / 2.1 | 0 / 0 | $1.80 |
 
-*SerpApi and Serper latencies in this run add the time of a second web search that the benchmark makes only to compute result overlap. The harness now excludes that call, so later runs report comparable news latencies. Serper's news endpoint returned no items for 6 of 17 queries in this run and 4 of 10 in an earlier 10-query run, mostly on different queries, so the pattern looks intermittent.
+Run 1 times for SerpApi and Serper news added a second baseline call, so only Run 2 is comparable.
 
-### Shopping (16 queries)
+### Shopping
 
-| Provider | Median | p95 | Fields complete | Judge (0-3) | USD per 1,000 |
+| Provider | Median R1 / R2 | Fields complete R2 | Judge R1 / R2 | Empty R1 / R2 | USD per 1,000 |
 |---|---|---|---|---|---|
-| Serper | 1,505 ms | 3,106 ms | 100% | 2.75 | $2.00 |
-| SerpApi | 2,034 ms | 5,196 ms | 100% | 2.31 | $25.00 |
+| Serper | 1,771 / 1,612 | 100% | 2.8 / 2.8 | 0 / 0 | $2.00 |
+| SerpApi | 1,946 / 2,123 | 100% | 2.6 / 2.4 | 0 / 0 | $25.00 |
 
-### What the numbers show so far
+### What the two runs show
 
-- SerpApi returned a non-empty result for every query in every intent and had every checked field on all news and shopping items. It was the fastest median on local places and had the top judge score there.
-- Serper cost 12 to 25 times less per search than SerpApi in every intent where both ran, and was faster and better judged on shopping.
-- Exa had the fastest news responses and the highest judge score on news.
-- Apify's actors were much slower than the direct APIs, with a news p95 above 100 seconds, which includes actor start-up.
+- **Speed repeated for local and shopping.** Medians moved by less than half a second between runs. SerpApi had the fastest local median in both. Serper was faster on shopping in both.
+- **SerpApi never returned an empty result,** and every news and shopping item had all the fields checked. Serper returned an empty news answer for 2 of 10 queries in Run 1 and 5 of 10 in Run 2. Sending the same request again alone gave 0 items for one query three times and 10, 0, 10 for another, so the empties come and go for the same query, and a call order effect is ruled out. Serper billed 1 credit for those empty answers.
+- **Exa led news on the judge** (3.0 in both runs). SerpApi's news judge score moved from 2.67 to 1.80 between runs, which shows how noisy a single LLM judge is.
+- **Price:** Serper costs 12 to 25 times less per search than SerpApi in every intent where both ran. Apify's actors were much slower than the direct APIs, with news at 22 to 28 seconds at the median and a p95 near 90 to 100 seconds.
 
-Not measured: reliability over weeks, the breadth of engines, legal protections, support and documentation. Differences smaller than about 10 points between providers at these sample sizes can be noise, and the judge's scores moved between runs.
+Not measured: reliability over weeks, the breadth of engines, legal protections, support and documentation.
 
 ## How this benchmark was checked
 
